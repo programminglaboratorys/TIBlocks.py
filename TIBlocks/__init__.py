@@ -114,11 +114,3 @@ def save(world_id: str, player: Player, world: World):
         out_name = "WORLD{}{:02}".format(world_id, i)
         with open(out_name+".8xv", "wb") as f:
             f.write(header + out_name.encode() + b"\x00\x80\x02\x09\x00\x09" + world.encode() + "\b\b")
-
-
-
-
-
-# 0008180D000178000170
-#print(load("A"))
-#print(ctypes.sizeof(Player))

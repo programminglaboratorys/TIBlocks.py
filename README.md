@@ -51,6 +51,10 @@ done processing TI-84 blocks world
 > [!WARNING]
 > The library was tested on Minecraft 1.16.5. Opening a world might freeze the game; close and reopen to resolve.
 
+#### results
+
+![java-gameplay](/assets/java-gameplay.gif)
+
 ## Development
 
 Read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
