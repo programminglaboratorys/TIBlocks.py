@@ -3,14 +3,13 @@ from TIBlocks import load
 from TIBlocks.blocks import Blocks
 from pymcworld.option import Option
 from pymcworld.nbt import *
+import os
 
 def main(world_id="A"):
-    print("NOTE you must be in the same directory as the .8xv files")
-    player, ITworld = load(world_id)
-    
+    player, TIworld = load(world_id)
+
     #print(world.blocks.__dict__)
     world = World()
-    
     
     blocks_map = {
         "GRASS":world.blocks.GRASS_BLOCK, 
@@ -24,7 +23,7 @@ def main(world_id="A"):
         "COBBLE": world.blocks.COBBLESTONE,
         "CRAFTING": world.blocks.CRAFTING_TABLE
     }
-    for y,layer in enumerate(ITworld.blocks):
+    for y,layer in enumerate(TIworld.blocks):
         for x,slice in enumerate(layer):
             for z,block in enumerate(slice):
                 if block.id == 0: # do not remove, air breaks/bugs regions
@@ -34,15 +33,14 @@ def main(world_id="A"):
                     block_name = Blocks(id).name.upper()
                     block_object = world.blocks.__dict__.get(block_name) or blocks_map.get(block_name)
                     block_object.properties = {"facing": "west"}
-                    try:
-                        assert block_object is not None, "block should not be None!"
-                    except AssertionError:
-                        print('block:',block_name, block_object)
-                        raise
+                    assert block_object is not None, "block should not be None!"
                     world.set_block(x, y, z, block_object)
                 except ValueError:
-                    print("block: not found", "Block:", block_name, "X:", x, "Y:", y, "Z:", z)
-    print("done")
+                    print("block: not found", "Block id:", id, "X:", x, "Y:", y, "Z:", z)
+                except AssertionError:
+                    print('Unknown block:', block_name, id)
+
+    print("done processing TI-84 blocks world")
     
     
     class CUSTOM_OPTION(Option):
@@ -75,7 +73,8 @@ def main(world_id="A"):
     world.options["Difficulty"] = Option("Difficulty", TAG_Byte, 0)
     
     
-    world.save("Village World 4")
+    world.save(os.path.basename(os.getcwd()))
 
 if __name__ == "__main__":
+    print("NOTE you must be in the same directory as the .8xv files")
     main(input("world id (A,B,C,D,E): "))
